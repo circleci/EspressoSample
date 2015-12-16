@@ -19,8 +19,6 @@ test:
     # wait for it to have booted
     - circle-android wait-for-boot
     # unlock the emulator screen
-    - sleep 80; adb shell input keyevent 82:
-        background: true
     # run tests  against the emulator.
     - "./gradlew connectedAndroidTest || adb shell input keyevent 82 && ./gradlew connectedAndroidTest"
     # copy the build outputs to artifacts
