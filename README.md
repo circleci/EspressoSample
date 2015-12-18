@@ -1,5 +1,8 @@
 # CircleCI Espresso sample
 
+[![Circle
+CI](https://circleci.com/gh/circleci/EspressoSample.svg?style=svg)](https://circleci.com/gh/circleci/EspressoSample)
+
 Highlights:
 
 * `com.android.ddmlib.DdmPreferences.setTimeOut(60000)` in the
