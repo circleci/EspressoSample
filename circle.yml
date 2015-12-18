@@ -19,13 +19,9 @@ test:
     # wait for it to have booted
     - circle-android wait-for-boot
     # unlock the emulator screen
+    - adb shell input keyevent 82
     # run tests  against the emulator.
-    - ./gradlew clean
-    - ./gradlew assembleDebug
-    - ./gradlew assembleDebugAndroidTest
-    - adb install app/build/outputs/apk/app-debug.apk
-    - adb install app/build/outputs/apk/app-debug-androidTest-unaligned.apk
-    - adb shell am instrument -w com.circleci.espressosample.test/android.support.test.runner.AndroidJUnitRunner
+    - ./gradlew connectedAndroidTest
     # copy the build outputs to artifacts
     - cp -r my-project/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
