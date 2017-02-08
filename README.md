@@ -3,6 +3,8 @@
 [![Circle
 CI](https://circleci.com/gh/circleci/EspressoSample.svg?style=svg)](https://circleci.com/gh/circleci/EspressoSample)
 
+This is my first Espresso sample
+
 Highlights:
 
 * `com.android.ddmlib.DdmPreferences.setTimeOut(60000)` in the
