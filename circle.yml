@@ -1,5 +1,3 @@
-version: 1
-
 machine:
   environment:
     PATH: "~/$CIRCLE_PROJECT_REPONAME/gradle-2.9/bin:$PATH"
