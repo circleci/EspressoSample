@@ -1,30 +1,28 @@
+## Customize the test machine
 machine:
   environment:
-    PATH: "~/$CIRCLE_PROJECT_REPONAME/gradle-2.9/bin:$PATH"
-    TERM: "dumb"
-    ADB_INSTALL_TIMEOUT: "10"
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    ANDROID_TARGET: android-23
+    ADB_INSTALL_TIMEOUT: 12
+    sudo ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
+
+  java:
+    version: oraclejdk8
+
+
+## Customize checkout
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init # use submodules
+
+## Customize dependencies
 dependencies:
   pre:
-    - wget "https://services.gradle.org/distributions/gradle-2.9-bin.zip"; unzip gradle-2.9-bin.zip
-    - echo y | android update sdk --no-ui --all --filter tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository,android-23
-    - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
+    # workaround for "failed to find Build Tools revision xx"
+    # https://discuss.circleci.com/t/android-build-tools-23-0-2-not-available/455/3
+    - echo y | android update sdk --no-ui --all --filter platform-tools,tools,extra-android-m2repository,extra-google-m2repository,android-23
+    - echo y | android update sdk --no-ui --all --filter build-tools-23.0.3
 
-test:
   override:
-    # start the emulator
-    - emulator -avd circleci-android22 -no-audio -no-window:
-        background: true
-        parallel: true
-    # wait for it to have booted
-    - circle-android wait-for-boot
-    # unlock the emulator screen
-    - sleep 30
-    - adb shell input keyevent 82
-    # run tests  against the emulator.
-    - ./gradlew connectedAndroidTest -PdisablePreDex
-    # copy the build outputs to artifacts
-    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
-    # copy the test results to the test results directory.
-    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - sudo ./gradlew dependencies
